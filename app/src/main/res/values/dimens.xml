@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="default_inputLayout_margin">10dp</dimen>
+    <dimen name="rv_item_margin">6dp</dimen>
+    <dimen name="description_margin_end">6dp</dimen>
+    <dimen name="description_margin_start">6dp</dimen>
+    <dimen name="bottom_fragment_layout_margin">16dp</dimen>
+    <dimen name="word_rv_margin">10dp</dimen>
+</resources>
