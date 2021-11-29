@@ -1,5 +1,7 @@
 package com.example.dictionary.presentation.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.example.dictionary.data.AppState
 import com.example.dictionary.data.datasource.DataSourceLocal
 import com.example.dictionary.data.datasource.DataSourceRemote
@@ -9,6 +11,7 @@ import com.example.dictionary.data.repository.RepositoryImpl
 import com.example.dictionary.domain.Model.DataModel
 import com.example.dictionary.domain.usecases.Interactor
 import com.example.dictionary.domain.usecases.MainInteractor
+import com.example.dictionary.presentation.base.BaseViewModel
 import com.example.dictionary.presentation.main.contract.Presenter
 import com.example.dictionary.presentation.main.contract.MvpView
 import com.example.dictionary.rx.ISchedulerProvider
@@ -16,38 +19,26 @@ import com.example.dictionary.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
-class MainPresenterImpl(
+class MainViewModel(
     private val interactor: Interactor<AppState<List<DataModel>>> = MainInteractor(
         RepositoryImpl(DataSourceRemote(RetrofitImplementation(), ResponseMapper())),
         RepositoryImpl(DataSourceLocal())
-    ),
-    private val schedulerProvider: ISchedulerProvider = SchedulerProvider()
-) : Presenter<MvpView> {
-    private val compositeDisposable = CompositeDisposable()
+    )
+): BaseViewModel<AppState<List<DataModel>>>() {
 
-    private var currentView: MvpView? = null
-    override fun attachView(view: MvpView) {
-        currentView = view
-    }
+    fun subscribe(): LiveData<AppState<List<DataModel>>> {
+        return liveDataForViewToObserve
 
-    override fun detachView(view: MvpView) {
-        if(view == currentView) {
-            compositeDisposable.clear()
-            compositeDisposable.dispose()
-            currentView = null
-        }
-    }
-
-    override fun getData(word: String, isOnline: Boolean) {
+    }    override fun loadData(word: String, isOnline: Boolean) {
         compositeDisposable += interactor.getData(word,isOnline)
-            .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
-            .doOnSubscribe{ currentView?.renderData(AppState.Loading(true)) }
-            .doOnComplete{currentView?.renderData(AppState.Loading(false))}
+            .subscribeOn(scheduler.io())
+            .observeOn(scheduler.ui())
+            .doOnSubscribe { liveDataForViewToObserve.postValue(AppState.Loading(true))}
+            .doOnComplete{liveDataForViewToObserve.postValue(AppState.Loading(false))}
             .subscribe({
-                       currentView?.renderData(it)
+                liveDataForViewToObserve.postValue(it)
             },{
-                currentView?.renderData(AppState.Error(it))
+                liveDataForViewToObserve.postValue(AppState.Error(it))
             })
     }
 }

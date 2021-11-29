@@ -4,7 +4,9 @@ import com.example.dictionary.data.AppState
 import com.example.dictionary.domain.Model.DataModel
 import com.example.dictionary.domain.repository.Repository
 import io.reactivex.Observable
+import javax.inject.Singleton
 
+@Singleton
 class MainInteractor(
     private val remoteRepository: Repository<List<DataModel>>,
     private val localRepository: Repository<List<DataModel>>
