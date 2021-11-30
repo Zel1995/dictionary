@@ -9,9 +9,9 @@ import com.example.dictionary.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseViewModel<T:AppState<List<DataModel>>>(
-    protected val liveDataForViewToObserve:MutableLiveData<T> = MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable= CompositeDisposable(),
-    protected val scheduler:SchedulerProvider = SchedulerProvider()
+    val liveDataForViewToObserve:MutableLiveData<T> = MutableLiveData(),
+    val compositeDisposable: CompositeDisposable= CompositeDisposable(),
+    val scheduler:SchedulerProvider = SchedulerProvider()
 ):ViewModel() {
     val viewState:LiveData<T> = liveDataForViewToObserve
 

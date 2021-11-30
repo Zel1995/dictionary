@@ -1,6 +1,8 @@
 package com.example.dictionary.data.network
 
 import com.example.dictionary.data.network.model.DataModelResponse
+import com.example.dictionary.domain.Model.DataModel
+import com.example.dictionary.domain.datasource.DataSource
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
