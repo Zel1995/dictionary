@@ -1,13 +1,19 @@
 package com.example.dictionary.domain.usecases
 
 import com.example.dictionary.data.AppState
+import com.example.dictionary.di.NAME_LOCAL
+import com.example.dictionary.di.NAME_REMOTE
 import com.example.dictionary.domain.Model.DataModel
 import com.example.dictionary.domain.repository.Repository
 import io.reactivex.Observable
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
-class MainInteractor(
-    private val remoteRepository: Repository<List<DataModel>>,
-    private val localRepository: Repository<List<DataModel>>
+@Singleton
+class MainInteractor @Inject constructor(
+    @Named(NAME_REMOTE)private val remoteRepository: Repository<List<DataModel>>,
+    @Named(NAME_LOCAL)private val localRepository: Repository<List<DataModel>>
 ) : Interactor<AppState<List<DataModel>>> {
     override fun getData(
         word: String,
