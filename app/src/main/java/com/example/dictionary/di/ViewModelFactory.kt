@@ -12,7 +12,7 @@ class ViewModelFactory @Inject constructor(
     private val viewModels:MutableMap<Class<out ViewModel>, Provider<ViewModel>>
 ):ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        val provider = viewModels[modelClass]?: throw IllegalArgumentException("unknow model class $modelClass")
+        val provider = viewModels[modelClass]?: throw IllegalArgumentException("unknown model class $modelClass")
         return provider.get() as T
     }
 }

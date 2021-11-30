@@ -45,6 +45,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MvpView {
     }
 
     private fun initViewModel(){
+        mainViewModel = viewModelFactory.create(MainViewModel::class.java)
         mainViewModel.subscribe().observe(viewLifecycleOwner,{renderData(it)})
     }
     private fun initRecyclerView() {
